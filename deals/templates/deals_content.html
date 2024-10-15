@@ -1,0 +1,76 @@
+{% if stats %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h3>Total Gross</h3>
+                <h2>${{ stats.total_gross|default:0|floatformat:2 }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h3>Average Gross</h3>
+                <h2>${{ stats.avg_gross|default:0|floatformat:2 }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h3>Number of Deals</h3>
+                <h2>{{ stats.deal_count|default:0 }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="stats-card">
+                <h3>New Car Deals</h3>
+                <h2>{{ stats.new_car_count|default:0 }}</h2>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stats-card">
+                <h3>Used Car Deals</h3>
+                <h2>{{ stats.used_car_count|default:0 }}</h2>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% if deals %}
+    <div class="table-responsive mt-4">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Stock #</th>
+                    <th>Customer</th>
+                    <th>Vehicle</th>
+                    <th>Type</th>
+                    <th>Salesperson</th>
+                    <th>Gross</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deal in deals %}
+                <tr>
+                    <td>{{ deal.date|date:"Y-m-d" }}</td>
+                    <td>{{ deal.stock_number }}</td>
+                    <td>{{ deal.customer_name }}</td>
+                    <td>{{ deal.vehicle_model }}</td>
+                    <td>{{ deal.get_car_type_display }}</td>
+                    <td>{{ deal.salesperson }}</td>
+                    <td>${{ deal.gross|floatformat:2 }}</td>
+                    <td>
+                        <a href="{% url 'deal_detail' deal.pk %}" class="btn btn-info btn-sm">View</a>
+                        <a href="{% url 'deal_update' deal.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        No deals found for this {{ view_type }} and car type.
+    </div>
+{% endif %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Deal Details</h1>
+
+<div class="deal-info">
+    <p><strong>Stock Number:</strong> {{ deal.stock_number }}</p>
+    <p><strong>Customer Name:</strong> {{ deal.customer_name }}</p>
+    <p><strong>Vehicle:</strong> {{ deal.vehicle_model }}</p>
+    <p><strong>Salesperson:</strong> {{ deal.salesperson }}</p>
+    <p><strong>Manager:</strong> {{ deal.manager }}</p>
+    <p><strong>Gross:</strong> ${{ deal.gross }}</p>
+    
+    {% if deal.has_trade %}
+        <h2>Trade-in Information</h2>
+        <p><strong>Trade-in Make:</strong> {{ deal.trade_make }}</p>
+        <p><strong>Trade-in Model:</strong> {{ deal.trade_model }}</p>
+        <p><strong>Trade-in Value:</strong> ${{ deal.trade_value }}</p>
+    {% endif %}
+</div>
+
+<div class="deal-actions">
+    <a href="{% url 'deal_update' deal.pk %}" class="btn btn-warning">Edit Deal</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Deal List</a>
+</div>
+{% endblock %}

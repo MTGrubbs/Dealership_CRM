@@ -1,0 +1,26 @@
+<h2>Deals for {{ selected_date|date:"F d, Y" }}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Deal ID</th>
+            <th>Customer</th>
+            <th>Gross</th>
+            {# Add more table headers as needed #}
+        </tr>
+    </thead>
+    <tbody>
+        {% for deal in daily_deals %}
+        <tr>
+            <td>{{ deal.id }}</td>
+            <td>{{ deal.customer_name }}</td>
+            <td>${{ deal.gross }}</td>
+            {# Add more table cells as needed #}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Monthly Deals ({{ selected_date|date:"F Y" }})</h2>
+<table>
+    {# Similar structure as above, but loop through monthly_deals #}
+</table>

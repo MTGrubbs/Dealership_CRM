@@ -1,0 +1,39 @@
+
+
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<h1>Deals</h1>
+
+<br>
+
+<!--  div class="row">  -->
+    <div class="col-md-6">
+        <a href="{% url 'new_car_deals' %}" class="btn btn-info btn-lg">View New Car Deals</a>
+    </div>
+    <br>
+    <div class="col-md-6">
+        <a href="{% url 'used_car_deals' %}" class="btn btn-warning btn-lg">View Used Car Deals</a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>Create a new Car Deal</h3>
+
+        <a href="{% url 'deal_create' %}" class="btn btn-success">Create New Deal</a>
+
+
+    </div>
+<!-- </div> -->
+
+
+
+
+
+
+{% endblock %}

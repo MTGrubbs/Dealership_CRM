@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'dashboard' %}" class="btn btn-secondary">Back</a>
+
+<h1>{{ deal_type }} Deals</h1>
+
+{% if deals %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Recap Number</th>
+                <th>Date</th>
+                <th>Stock Number</th>
+                <th>Customer Name</th>
+                <th>Vehicle</th>
+                <th>Salesperson</th>
+                <th>Gross</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deal in deals %}
+            <tr>
+                <td>{{ deal.recap_number }}</td>
+                <td>{{ deal.date }}</td>
+                <td>{{ deal.stock_number }}</td>
+                <td>{{ deal.customer_name }}</td>
+                <td>{{ deal.vehicle_model }}</td>
+                <td>{{ deal.salesperson }}</td>
+                <td>${{ deal.gross }}</td>
+                <td>
+                    <a href="{% url 'deal_detail' deal.pk %}" class="btn btn-info btn-sm">View</a>
+                    <a href="{% url 'deal_update' deal.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No {{ deal_type|lower }} deals found.</p>
+{% endif %}
+
+<a href="{% url 'dashboard' %}" class="btn btn-secondary">Back</a>
+{% endblock %}

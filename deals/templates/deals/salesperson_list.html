@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Salespeople</h1>
+
+<a href="{% url 'create_salesperson' %}" class="btn btn-primary">Add New Salesperson</a>
+
+{% if salespeople %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>firstname</th>
+                <th>lastname</th>
+                <!--      <th>Email</th>      -->
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for salesperson in salespeople %}
+            <tr>
+                <td>{{ salesperson.user.username }}</td>
+                <td>{{ salesperson.user.first_name }}</td>
+                <td>{{ salesperson.user.last_name }}</td>
+                <!--    <td> {{ salesperson.user.email }}</td>    -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No salespeople found.</p>
+{% endif %}
+{% endblock %}

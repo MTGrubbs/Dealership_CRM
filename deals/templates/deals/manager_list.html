@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Managers</h1>
+
+<a href="{% url 'create_manager' %}" class="btn btn-primary">Add New Manager</a>
+
+{% if managers %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>firstname</th>
+                <th>lastname</th>
+                <!--      <th>Email</th>      -->
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for manager in managers %}
+            <tr>
+                <td>{{ manager.user.username }}</td>
+                <td>{{ manager.user.first_name }}</td>
+                <td>{{ manager.user.last_name }}</td>
+
+                <!--    <td> {{ manager.user.email }}</td>  -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No managers found.</p>
+{% endif %}
+{% endblock %}

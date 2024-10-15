@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'deals/css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'deals/css/styles.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    
+    <a href="{% url 'new_car_deals' %}" class="btn btn-info">New Deals</a>
+    <a href="{% url 'used_car_deals' %}" class="btn btn-warning">Used Deals</a>
+    <a href="{% url 'deal_create' %}" class="btn btn-success">Create New Deal</a>
+
+<br>
+<br>
+
+<div id="daily-deals-url" data-url="{% url 'daily_deals' %}"></div>
+<div id="monthly-deals-url" data-url="{% url 'monthly_deals' %}"></div>
+
+<br>
+<br>
+
+<h1>Dashboard</h1>
+<div class="dashboard">
+    <h1 class="dashboard-title"></h1>
+
+    <div class="stats-container">
+        <div class="stat-card" id="daily-card">
+            <h2 class="stat-card-title">Today's Overview</h2>
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <span class="stat-value">${{ daily_stats.total_gross|default:'0.00'|floatformat:2 }}</span>
+                    <span class="stat-label">Total Gross</span>
+                    <span class="trend-indicator {% if daily_trend > 0 %}positive{% elif daily_trend < 0 %}negative{% endif %}">
+                        <i class="fas {% if daily_trend > 0 %}fa-arrow-up{% elif daily_trend < 0 %}fa-arrow-down{% else %}fa-minus{% endif %}"></i>
+                        {{ daily_trend|floatformat:2 }}%
+                    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ daily_stats.deal_count|default:'0' }}</span>
+                    <span class="stat-label">Deals Closed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">${{ daily_stats.avg_gross|default:'0.00'|floatformat:2 }}</span>
+                    <span class="stat-label">Avg. Gross per Deal</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card" id="monthly-card">
+            <h2 class="stat-card-title">This Month</h2>
+
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <span class="stat-value">${{ monthly_stats.total_gross|default:'0.00'|floatformat:2 }}</span>
+                    <span class="stat-label">Total Gross</span>
+                    <span class="trend-indicator {% if monthly_trend > 0 %}positive{% elif monthly_trend < 0 %}negative{% endif %}">
+                        <i class="fas {% if monthly_trend > 0 %}fa-arrow-up{% elif monthly_trend < 0 %}fa-arrow-down{% else %}fa-minus{% endif %}"></i>
+                        {{ monthly_trend|floatformat:2 }}%
+                    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ monthly_stats.deal_count|default:'0' }}</span>
+                    <span class="stat-label">Deals Closed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">${{ monthly_stats.avg_gross|default:'0.00'|floatformat:2 }}</span>
+                    <span class="stat-label">Avg. Gross per Deal</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+<!-- Add this div to pass URLs to JavaScript -->
+<div id="js-urls" 
+     data-daily-deals-url="{% url 'daily_deals' %}"
+     data-monthly-deals-url="{% url 'monthly_deals' %}">
+</div>
+
+
+
+<div id="dealsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <table id="dealsTable">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Gross</th>
+                    <th>Car Type</th>
+                    <th>Date</th>
+                    <th>salesperson</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<h1> Day by Day </h1>
+
+<form method="get" class="date-filter" id="date-filter-form">
+    <label for="date-filter">Select Date:</label>
+    <input type="date" id="date-filter" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+</form>
+
+   
+
+    <div class="dashboard-stats">
+        <a href="{% url 'deals_by_date' %}" class="stat-card">
+            <h2>Today's Deals</h2>
+            <p class="stat-value">{{ total_deals }}</p>
+        </a>
+        <div class="stat-card">
+            <h2>Today's Gross</h2>
+            <p class="stat-value">${{ total_gross|floatformat:2 }}</p>
+        </div>
+        <div class="stat-card">
+            <h2>Today's PVR</h2>
+            <p class="stat-value">${{ total_gross|floatformat:2 }}</p>
+        </div>
+        <div class="stat-card">
+            <h2>Salespeople</h2>
+            <p class="stat-value">{{ total_salespeople }}</p>
+        </div>
+        <div class="stat-card">
+            <h2>Managers</h2>
+            <p class="stat-value">{{ total_managers }}</p>
+        </div>
+    </div>
+
+    {% if has_deals %}
+        <div class="dashboard-tables">
+            
+            <div class="dashboard-section">
+                <h2>Top Salespeople (Today)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Salesperson</th>
+                            <th>Deals Closed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for salesperson in top_salespeople %}
+                        <tr>
+                            <td>{{ salesperson.user.get_full_name }}</td>
+                            <td>{{ salesperson.deal_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Recent Deals</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Gross</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for deal in recent_deals %}
+                        <tr>
+                            <td>{{ deal.date }}</td>
+                            <td>{{ deal.customer_name }}</td>
+                            <td>{{ deal.vehicle_model }}</td>
+                            <td>${{ deal.gross|floatformat:2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    {% else %}
+        <div class="no-deals-message">
+            <p>No deals for the selected date.</p>
+        </div>
+    {% endif %}
+
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'deals/js/inline-scripts.js' %}"></script>
+<script src="{% static 'deals/js/dashboard.js' %}"></script>
+
+
+{% endblock %}

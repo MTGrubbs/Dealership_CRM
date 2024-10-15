@@ -1,0 +1,155 @@
+body { background-color: #f8f9fa; }
+    .container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-top: 20px;
+    }
+    h1 { color: #000000; margin-bottom: 20px; }
+    .form-row {
+        background-color: #f1f3f5;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 0px;
+    }
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+    .stats-card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    .stats-card:hover { transform: translateY(-5px); }
+    .stats-card h3 {
+        margin-top: 0;
+        color: #6c757d;
+        font-size: 1rem;
+    }
+    .stats-card h2 {
+        color: #000000;
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+    .table-responsive {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .table thead th {
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+    }
+    .table-hover tbody tr:hover { background-color: #f1f3f5; }
+    .btn-sm {
+        border-radius: 20px;
+        padding: 0.25rem 0.75rem;
+    }
+    .btn-apply {
+        background-color: #0000ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn-apply:hover { 
+        background-color: #0808a7; 
+        color: white;
+    }
+
+@media screen and (max-width: 767px) {
+    .table-responsive { border: none; padding: 0; }
+    .table { border: 0; }
+    .table thead { display: none; }
+    .table tr {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 2px solid #ddd;
+    }
+    .table td {
+        display: block;
+        text-align: right;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
+    }
+    .table td:last-child { border-bottom: 0; }
+    .table td:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+}
+
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    @media screen and (max-width: 1200px) {
+        .table {
+            font-size: 0.8rem;
+            width: 100%;
+
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        .table {
+            font-size: 0.75rem;
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .table {
+            font-size: 0.65rem;
+        }
+        .table th,
+        .table td {
+            padding: 0.4rem;
+        }
+    }
+
+    @media screen and (max-width: 576px) {
+        .table {
+            font-size: 0.5rem;
+        }
+        .table th,
+        .table td {
+            padding: 0.05rem;
+            margin: 0.05rem;
+
+        }
+        .btn-sm {
+            padding: 0.1rem 0.1rem;
+            font-size: 0.4rem;
+        }
+    }

@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealership CRM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'deals/css/styles.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    
+    {% block extra_css %}{% endblock %}
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-logo">
+                <a href="{% url 'dashboard' %}">BackSeatAPI &nbsp;<i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+            </div>
+            <button class="navbar-toggle" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="navbar-links">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}">Dashboard &nbsp;<i class="fa fa-home" aria-hidden="true"></i></a></li>
+                        <!-- <a href="{% url 'deal_list' %}">All Deals</a> -->
+                    <li><a href="{% url 'new_car_deals' %}">New &nbsp;<i class="fa fa-car" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'used_car_deals' %}">Used &nbsp;<i class="fa fa-car" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'deals_by_date' %}">Deals/Date &nbsp;<i class="fa fa-table" aria-hidden="true"></i></a></li>                    
+                    {% if perms.deals.view_all_deals %}
+                        <!--  <li><a href="{% url 'salesperson_list' %}">Salespeople &nbsp;<i class="fa fa-user" aria-hidden="true"></i></a></li> -->
+                        <!--  <li><a href="{% url 'manager_list' %}">Managers &nbsp;<i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li> -->
+                    {% endif %}
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-button">Logout &nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i></button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login &nbsp;<i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'register' %}">Register &nbsp;<i class="fa fa-user-plus" aria-hidden="true"></i></a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    {% block content %}
+    {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Dealership CRM. All rights reserved.</p>
+    </footer>
+    <script src="{% static 'deals/js/navbar.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+
+    {% block extra_js %}
+
+    {% endblock %}
+
+</body>
+</html>
