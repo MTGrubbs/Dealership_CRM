@@ -12,6 +12,7 @@ urlpatterns = [
     path('deals/used/', views.used_car_deals, name='used_car_deals'),
 
     path('deals-by-date/', views.deals_by_date, name='deals_by_date'),
+    path('search/', views.search_deals, name='search_deals'),
 
     path('deals/<int:pk>/', views.deal_detail, name='deal_detail'),
     path('deals/create/', views.deal_create, name='deal_create'),

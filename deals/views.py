@@ -9,7 +9,6 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Deal, Salesperson, Manager
 from .forms import DealForm, UserRegistrationForm, ManagerForm, SalespersonForm
 import logging
-from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.db.models import Sum, Count, Avg, Q
 from django.utils import timezone
@@ -21,9 +20,29 @@ from django.http import HttpResponse
 from datetime import datetime, timedelta
 
 
+def search_deals(request):
+    query = request.GET.get('q')
+    if query:
+        deals = Deal.objects.filter(
+            Q(customer_name__icontains=query) |
+            Q(vehicle_model__icontains=query) |
+            Q(stock_number__icontains=query) |
+            Q(salesperson__user__username__icontains=query) |
+            Q(salesperson__user__first_name__icontains=query) |
+            Q(salesperson__user__last_name__icontains=query) |
+            Q(manager__user__username__icontains=query) |
+            Q(manager__user__first_name__icontains=query) |
+            Q(manager__user__last_name__icontains=query)
 
-
-
+        )
+    else:
+        deals = Deal.objects.none()
+    
+    context = {
+        'deals': deals,
+        'query': query
+    }
+    return render(request, 'search_results.html', context)
 
 
 logger = logging.getLogger(__name__)

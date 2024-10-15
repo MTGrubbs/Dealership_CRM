@@ -42,6 +42,12 @@
                             <button type="submit" class="logout-button">Logout &nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i></button>
                         </form>
                     </li>
+                    <li>
+                    <form action="{% url 'search_deals' %}" method="get">
+                        <input type="text" name="q" placeholder="Search deals...">
+                        <button type="submit">Search</button>
+                    </form>
+                </li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login &nbsp;<i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
                     <li><a href="{% url 'register' %}">Register &nbsp;<i class="fa fa-user-plus" aria-hidden="true"></i></a></li>

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Search Results for "{{ query }}"</h2>
+
+{% if deals %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Stock #</th>
+                <th>Customer</th>
+                <th>Vehicle</th>
+                <th>Type</th>
+                <th>Salesperson</th>
+                <th>Gross</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deal in deals %}
+            <tr>
+                <td>{{ deal.date|date:"Y-m-d" }}</td>
+                <td>{{ deal.stock_number }}</td>
+                <td>{{ deal.customer_name }}</td>
+                <td>{{ deal.vehicle_model }}</td>
+                <td>{{ deal.get_car_type_display }}</td>
+                <td>{{ deal.salesperson }}</td>
+                <td>${{ deal.gross|floatformat:2 }}</td>
+                <td>
+                    <a href="{% url 'deal_detail' deal.pk %}" class="btn btn-info btn-sm">View</a>
+                    <a href="{% url 'deal_update' deal.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No deals found matching your search.</p>
+{% endif %}
+{% endblock %}
